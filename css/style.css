@@ -1,41 +1,72 @@
-/* css/style.css */
-body {
-  font-family: sans-serif;
-  margin: 2rem;
-  background: #f9f9f9;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-h1, h2 {
-  color: #333;
+body, html {
+  height: 100%;
+  background: #f4f4f4;
+  position: relative;
+  overflow: hidden;
 }
 
-form {
+.background-shapes::before,
+.background-shapes::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.background-shapes::before {
+  width: 500px;
+  height: 500px;
+  background: #ff914d;
+  top: -150px;
+  left: -150px;
+}
+
+.background-shapes::after {
+  width: 400px;
+  height: 400px;
+  background: #a3a3a3;
+  bottom: -100px;
+  right: -100px;
+}
+
+.container {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-input, textarea {
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 1rem;
+h1 {
+  font-size: 3.5rem;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-button {
-  padding: 10px;
-  background: #007bff;
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.btn {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  background-color: #ff914d;
   color: white;
-  border: none;
-  cursor: pointer;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
-button:hover {
-  background: #0056b3;
-}
-
-.post {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 10px;
-  background: white;
+.btn:hover {
+  background-color: #ff7220;
 }
