@@ -1,15 +1,78 @@
-<!-- posts.html -->
 <!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
-  <title>Усі пости</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Переглянути пости</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .post-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .post {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .post:hover {
+      transform: scale(1.02);
+    }
+
+    .post h3 {
+      color: #ff914d;
+      margin-bottom: 10px;
+    }
+
+    .post p {
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <h2>Усі пости</h2>
-  <div id="postsContainer"></div>
+  <main class="post-container">
+    <h1 style="text-align: center;">Генератор постів</h1>
+    <div id="posts"></div>
+  </main>
 
-  <script src="js/main.js"></script>
+  <script>
+    const topics = [
+      "Штучний інтелект", "Веб-дизайн", "Кібербезпека", "UI/UX тенденції",
+      "JavaScript в 2025", "Розробка мобільних застосунків", "CMS-системи майбутнього",
+      "Безпека даних", "Мікросервіси", "Headless CMS"
+    ];
+
+    const descriptions = [
+      "Це короткий вступ до теми, яка має велике значення для сучасної ІТ-індустрії.",
+      "Огляд ключових підходів та технологій, що впливають на майбутнє розробки.",
+      "Просте пояснення складної теми з прикладами й висновками.",
+      "Ми досліджуємо цю тему з різних сторін — від практики до теорії.",
+      "Актуальний погляд на одну з найважливіших проблем сучасного програмування."
+    ];
+
+    function generatePost() {
+      const topic = topics[Math.floor(Math.random() * topics.length)];
+      const desc = descriptions[Math.floor(Math.random() * descriptions.length)];
+
+      const post = document.createElement("div");
+      post.className = "post";
+      post.innerHTML = `<h3>${topic}</h3><p>${desc}</p>`;
+
+      const container = document.getElementById("posts");
+      container.prepend(post); // нові пости зверху
+    }
+
+    // Спочатку згенеруємо 1 пост
+    generatePost();
+
+    // Потім — кожні 27 секунд
+    setInterval(generatePost, 27000);
+  </script>
 </body>
 </html>
