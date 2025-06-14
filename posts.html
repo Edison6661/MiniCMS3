@@ -3,41 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Переглянути пости</title>
+  <title>Пости</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+    }
+
     .post-container {
-      max-width: 800px;
-      margin: 40px auto;
+      max-width: 700px;
+      margin: 50px auto;
       padding: 20px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      height: 80vh;
+      scroll-behavior: smooth;
     }
 
     .post {
-      background: white;
+      background: #fafafa;
+      border-left: 4px solid #ff914d;
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-    }
-
-    .post:hover {
-      transform: scale(1.02);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      animation: fadeIn 0.6s ease-in-out;
     }
 
     .post h3 {
-      color: #ff914d;
-      margin-bottom: 10px;
+      margin-top: 0;
+      color: #333;
     }
 
     .post p {
       color: #555;
+      margin: 10px 0 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff914d;
+      margin-bottom: 30px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <main class="post-container">
-    <h1 style="text-align: center;">Генератор постів</h1>
+    <h1>Пости</h1>
     <div id="posts"></div>
   </main>
 
@@ -65,13 +86,16 @@
       post.innerHTML = `<h3>${topic}</h3><p>${desc}</p>`;
 
       const container = document.getElementById("posts");
-      container.prepend(post); // нові пости зверху
+      container.appendChild(post);
+
+      // Прокрутка вниз до останнього поста
+      container.scrollTop = container.scrollHeight;
     }
 
-    // Спочатку згенеруємо 1 пост
+    // Згенеруємо перший пост одразу
     generatePost();
 
-    // Потім — кожні 27 секунд
+    // Генеруємо пост кожні 27 секунд
     setInterval(generatePost, 27000);
   </script>
 </body>
