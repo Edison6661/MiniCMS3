@@ -4,34 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Пости</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f4;
+      background: #f1f1f1;
     }
 
     .post-container {
       max-width: 700px;
-      margin: 50px auto;
+      margin: 40px auto;
       padding: 20px;
       background: #fff;
       border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       overflow-y: auto;
-      height: 80vh;
-      scroll-behavior: smooth;
+      height: 85vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6600;
+      margin-bottom: 30px;
     }
 
     .post {
-      background: #fafafa;
-      border-left: 4px solid #ff914d;
+      background: #f9f9f9;
+      border-left: 5px solid #ffa64d;
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      animation: fadeIn 0.6s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     .post h3 {
@@ -41,61 +45,74 @@
 
     .post p {
       color: #555;
-      margin: 10px 0 0;
-    }
-
-    h1 {
-      text-align: center;
-      color: #ff914d;
-      margin-bottom: 30px;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <main class="post-container">
+  <div class="post-container">
     <h1>Пости</h1>
     <div id="posts"></div>
-  </main>
+  </div>
 
   <script>
     const topics = [
-      "Штучний інтелект", "Веб-дизайн", "Кібербезпека", "UI/UX тенденції",
-      "JavaScript в 2025", "Розробка мобільних застосунків", "CMS-системи майбутнього",
-      "Безпека даних", "Мікросервіси", "Headless CMS"
+      "Штучний інтелект", "Веб-дизайн", "Кібербезпека", "UI/UX тренди", "JavaScript 2025",
+      "Мобільна розробка", "Мікросервіси", "Headless CMS", "Node.js", "Реактивне програмування",
+      "Web3", "Дизайн-системи", "Бази даних", "Docker і DevOps", "GraphQL", "Типізація в JS",
+      "CMS-системи майбутнього", "UX-дослідження", "SEO оптимізація", "Firebase", "Сучасний CSS"
     ];
 
     const descriptions = [
-      "Це короткий вступ до теми, яка має велике значення для сучасної ІТ-індустрії.",
-      "Огляд ключових підходів та технологій, що впливають на майбутнє розробки.",
-      "Просте пояснення складної теми з прикладами й висновками.",
-      "Ми досліджуємо цю тему з різних сторін — від практики до теорії.",
-      "Актуальний погляд на одну з найважливіших проблем сучасного програмування."
+      "Цей напрям є ключовим у розвитку цифрових технологій.",
+      "Останні тренди, які змінюють підхід до розробки інтерфейсів.",
+      "Ми розглядаємо актуальні виклики у сфері безпеки.",
+      "Ця тема набирає популярності серед розробників.",
+      "Приклади використання нових фреймворків та бібліотек.",
+      "Досвід практичного впровадження технологій у проектах.",
+      "Розглянемо переваги й ризики цього підходу.",
+      "Порівняння традиційного й headless підходу до CMS.",
+      "Що нового з’явилося у світі front-end?",
+      "Це основа сучасного підходу до архітектури."
     ];
+
+    // Отримуємо збережені пости
+    const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+
+    function renderPost(title, text) {
+      const post = document.createElement("div");
+      post.className = "post";
+      post.innerHTML = `<h3>${title}</h3><p>${text}</p>`;
+
+      const container = document.getElementById("posts");
+      container.insertBefore(post, container.firstChild);
+    }
 
     function generatePost() {
       const topic = topics[Math.floor(Math.random() * topics.length)];
       const desc = descriptions[Math.floor(Math.random() * descriptions.length)];
 
-      const post = document.createElement("div");
-      post.className = "post";
-      post.innerHTML = `<h3>${topic}</h3><p>${desc}</p>`;
+      // Додаємо новий пост у збережені
+      savedPosts.unshift({ topic, desc });
 
-      const container = document.getElementById("posts");
-      container.appendChild(post);
+      // Обрізаємо до 50 останніх постів (опціонально)
+      if (savedPosts.length > 50) savedPosts.pop();
 
-      // Прокрутка вниз до останнього поста
-      container.scrollTop = container.scrollHeight;
+      // Зберігаємо в localStorage
+      localStorage.setItem('posts', JSON.stringify(savedPosts));
+
+      // Рендеримо
+      renderPost(topic, desc);
     }
 
-    // Згенеруємо перший пост одразу
-    generatePost();
+    // Рендер збережених постів при завантаженні
+    savedPosts.forEach(post => renderPost(post.topic, post.desc));
 
-    // Генеруємо пост кожні 27 секунд
+    // Автоматичне створення кожні 27 сек
     setInterval(generatePost, 27000);
   </script>
 </body>
