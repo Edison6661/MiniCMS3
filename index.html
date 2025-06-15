@@ -1,66 +1,80 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Курсові</title>
+  <meta charset="UTF-8">
+  <title>КУРСОВІ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #e6e6e6;
-      overflow: hidden;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
       position: relative;
     }
 
-    .shapes {
+    .background-shapes {
       position: absolute;
       width: 100%;
       height: 100%;
       z-index: 0;
+      overflow: hidden;
     }
 
     .shape {
       position: absolute;
-      opacity: 0.8;
-    }
-
-    .shape.orange {
-      background-color: #f7931e;
+      background: orange;
+      opacity: 0.7;
+      border-radius: 10px;
+      transform: rotate(45deg);
     }
 
     .shape.gray {
-      background-color: #999999;
+      background: gray;
     }
 
-    .triangle {
-      width: 0;
-      height: 0;
-      border-left: 100px solid transparent;
-      border-right: 100px solid transparent;
-      border-bottom: 100px solid #f7931e;
+    .shape1 {
+      top: 5%;
+      left: 10%;
+      width: 150px;
+      height: 150px;
     }
 
-    .circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
+    .shape2 {
+      bottom: 10%;
+      right: 5%;
+      width: 200px;
+      height: 200px;
     }
 
-    .square {
+    .shape3 {
+      top: 30%;
+      right: 20%;
+      width: 100px;
+      height: 100px;
+    }
+
+    .shape4 {
+      bottom: 20%;
+      left: 15%;
       width: 120px;
       height: 120px;
     }
 
     .content {
-      text-align: center;
-      z-index: 2;
       position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
     h1 {
@@ -69,41 +83,73 @@
       margin-bottom: 40px;
     }
 
-    .btn {
-      display: block;
-      margin: 20px auto;
-      padding: 15px 30px;
-      border: 2px solid #333;
-      border-radius: 50px;
-      background: white;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      width: 220px;
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .btn:hover {
+    .buttons a {
+      padding: 15px 30px;
+      border: 2px solid #333;
+      border-radius: 40px;
+      background: white;
+      color: #333;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .buttons a:hover {
       background: #333;
       color: white;
+    }
+
+    #logout {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      background: #e74c3c;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #logout:hover {
+      background: #c0392b;
     }
   </style>
 </head>
 <body>
-  <div class="shapes">
-    <div class="shape square orange" style="top: 10px; left: 10px;"></div>
-    <div class="shape square gray" style="bottom: 30px; left: 50px;"></div>
-    <div class="shape triangle" style="top: 0; right: 0;"></div>
-    <div class="shape circle gray" style="top: 60px; right: 120px;"></div>
-    <div class="shape circle orange" style="bottom: 20px; right: 20px;"></div>
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "login.html";
+    }
+  </script>
+  <button id="logout" onclick="logout()">Вийти</button>
+
+  <div class="background-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2 gray"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4 gray"></div>
   </div>
 
   <div class="content">
     <h1>КУРСОВІ</h1>
-    <a href="create-post.html" class="btn">СТВОРИТИ ПОСТ</a>
-    <a href="posts.html" class="btn">ПЕРЕГЛЯНУТИ ПОСТИ</a>
+    <div class="buttons">
+      <a href="create-post.html">СТВОРИТИ ПОСТ</a>
+      <a href="posts.html">ПЕРЕГЛЯНУТИ ПОСТИ</a>
+    </div>
   </div>
 </body>
 </html>
