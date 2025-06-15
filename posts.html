@@ -8,112 +8,221 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f1f1f1;
+      background: linear-gradient(to right, #f0f0f0, #e0e0e0);
+      color: #333;
     }
 
-    .post-container {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      height: 85vh;
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 40px 20px;
     }
 
     h1 {
       text-align: center;
-      color: #ff6600;
-      margin-bottom: 30px;
+      color: #ff6f00;
+      margin-bottom: 40px;
     }
 
     .post {
-      background: #f9f9f9;
-      border-left: 5px solid #ffa64d;
-      border-radius: 10px;
-      padding: 20px;
+      background-color: white;
+      border-left: 8px solid #ff6f00;
       margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      animation: fadeIn 0.5s ease-in-out;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
     }
 
-    .post h3 {
-      margin-top: 0;
+    .post h2 {
+      margin: 0;
       color: #333;
     }
 
     .post p {
-      color: #555;
+      margin: 10px 0;
+      color: #666;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .post .actions {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .post button {
+      margin-left: 10px;
+      background: #ff6f00;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .post button:hover {
+      background: #e65100;
+    }
+
+    .logout {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .logout button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .logout button:hover {
+      background: #222;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .theme-toggle button {
+      background: #ccc;
+      color: #333;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dark body {
+      background: #222;
+      color: #eee;
+    }
+
+    .dark .post {
+      background: #333;
+      color: #fff;
+    }
+
+    .dark .post p {
+      color: #ccc;
+    }
+
+    .dark .theme-toggle button {
+      background: #444;
+      color: #fff;
+    }
+
+    .dark .logout button {
+      background: #666;
     }
   </style>
 </head>
 <body>
-  <div class="post-container">
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌙 Тема</button>
+  </div>
+
+  <div class="logout">
+    <button onclick="logout()">Вийти</button>
+  </div>
+
+  <div class="container">
     <h1>Пости</h1>
-    <div id="posts"></div>
+    <div id="postList"></div>
   </div>
 
   <script>
-    const topics = [
-      "Штучний інтелект", "Веб-дизайн", "Кібербезпека", "UI/UX тренди", "JavaScript 2025",
-      "Мобільна розробка", "Мікросервіси", "Headless CMS", "Node.js", "Реактивне програмування",
-      "Web3", "Дизайн-системи", "Бази даних", "Docker і DevOps", "GraphQL", "Типізація в JS",
-      "CMS-системи майбутнього", "UX-дослідження", "SEO оптимізація", "Firebase", "Сучасний CSS"
-    ];
-
-    const descriptions = [
-      "Цей напрям є ключовим у розвитку цифрових технологій.",
-      "Останні тренди, які змінюють підхід до розробки інтерфейсів.",
-      "Ми розглядаємо актуальні виклики у сфері безпеки.",
-      "Ця тема набирає популярності серед розробників.",
-      "Приклади використання нових фреймворків та бібліотек.",
-      "Досвід практичного впровадження технологій у проектах.",
-      "Розглянемо переваги й ризики цього підходу.",
-      "Порівняння традиційного й headless підходу до CMS.",
-      "Що нового з’явилося у світі front-end?",
-      "Це основа сучасного підходу до архітектури."
-    ];
-
-    // Отримуємо збережені пости
-    const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-
-    function renderPost(title, text) {
-      const post = document.createElement("div");
-      post.className = "post";
-      post.innerHTML = `<h3>${title}</h3><p>${text}</p>`;
-
-      const container = document.getElementById("posts");
-      container.insertBefore(post, container.firstChild);
-    }
-
-    function generatePost() {
+    const topics = ["Технології", "Дизайн", "Мистецтво", "Кодинг", "Інженерія", "Освіта", "Бізнес", "Наука", "Психологія", "Космос"];
+    
+    function generateRandomPost() {
       const topic = topics[Math.floor(Math.random() * topics.length)];
-      const desc = descriptions[Math.floor(Math.random() * descriptions.length)];
-
-      // Додаємо новий пост у збережені
-      savedPosts.unshift({ topic, desc });
-
-      // Обрізаємо до 50 останніх постів (опціонально)
-      if (savedPosts.length > 50) savedPosts.pop();
-
-      // Зберігаємо в localStorage
-      localStorage.setItem('posts', JSON.stringify(savedPosts));
-
-      // Рендеримо
-      renderPost(topic, desc);
+      return {
+        id: Date.now(),
+        title: `${topic}: ${Math.random().toString(36).substring(2, 10)}`,
+        content: `Це новий пост на тему "${topic}".`,
+        timestamp: new Date().toLocaleTimeString()
+      };
     }
 
-    // Рендер збережених постів при завантаженні
-    savedPosts.forEach(post => renderPost(post.topic, post.desc));
+    function loadPosts() {
+      const saved = localStorage.getItem("posts");
+      return saved ? JSON.parse(saved) : [];
+    }
 
-    // Автоматичне створення кожні 27 сек
-    setInterval(generatePost, 27000);
+    function savePosts(posts) {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
+
+    function renderPosts() {
+      const postList = document.getElementById("postList");
+      const posts = loadPosts();
+      postList.innerHTML = "";
+
+      posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post";
+        div.innerHTML = `
+          <h2>${post.title}</h2>
+          <p>${post.content}</p>
+          <small>🕒 ${post.timestamp}</small>
+          <div class="actions">
+            <button onclick="editPost(${post.id})">Редагувати</button>
+            <button onclick="deletePost(${post.id})">Видалити</button>
+          </div>
+        `;
+        postList.appendChild(div);
+      });
+    }
+
+    function addPost() {
+      let posts = loadPosts();
+      const newPost = generateRandomPost();
+
+      posts.unshift(newPost); // додаємо зверху
+      if (posts.length > 17) posts = posts.slice(0, 17);
+
+      savePosts(posts);
+      renderPosts();
+    }
+
+    function editPost(id) {
+      const posts = loadPosts();
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+
+      const newContent = prompt("Редагувати текст:", post.content);
+      if (newContent) {
+        post.content = newContent;
+        savePosts(posts);
+        renderPosts();
+      }
+    }
+
+    function deletePost(id) {
+      const posts = loadPosts().filter(p => p.id !== id);
+      savePosts(posts);
+      renderPosts();
+    }
+
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "login.html";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+
+    // Генерація кожні 27 секунд
+    setInterval(addPost, 27000);
+
+    // Початкова ініціалізація
+    renderPosts();
   </script>
 </body>
 </html>
