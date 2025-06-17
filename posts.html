@@ -89,45 +89,22 @@
   <div class="post-list" id="postList"></div>
 
   <script>
-    function generateAutoPost() {
-  const themes = ["технології", "мистецтво", "філософія", "освіта", "подорожі", "програмування", "наука", "історія"];
-  const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+    function generateRandomPost() {
+      const themes = [
+        "технології", "мистецтво", "філософія", "освіта", "подорожі", 
+        "програмування", "наука", "історія", "література", "музика"
+      ];
+      const randomTheme = themes[Math.floor(Math.random() * themes.length)];
 
-  const post = {
-    title: `Це автоматично згенерований пост`,
-    content: `Це автоматично згенерований пост про тему: ${randomTheme}.`,
-    timestamp: new Date().toLocaleString()
-  };
+      const post = {
+        title: `Автоматичний пост: ${randomTheme}`,
+        content: `${randomTheme}`, // Без зайвої фрази
+        timestamp: new Date().toLocaleString()
+      };
 
-  savePost(post);
-  renderPosts();
-}
-  function generateRandomPost() {
-    const themes = [
-      "технології", "мистецтво", "філософія", "освіта", "подорожі", 
-      "програмування", "наука", "історія", "література", "музика"
-    ];
-    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
 
-    const post = {
-      title: `Автоматичний пост: ${randomTheme}`,
-      content: `Це автоматично згенерований пост про тему: ${randomTheme}.`,
-      timestamp: new Date().toLocaleString()
-    };
-
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-
-    posts.unshift(post); // додаємо на початок
-
-    if (posts.length > 17) posts.pop(); // не більше 17
-
-    localStorage.setItem("posts", JSON.stringify(posts));
-    renderPosts(); // оновити стрічку
-  
-  // Автогенерація кожні 27 секунд
-  setInterval(generateRandomPost, 27000);
-
-     // ліміт у 17 постів
+      posts.unshift(post);
       if (posts.length > 17) posts.pop();
 
       localStorage.setItem("posts", JSON.stringify(posts));
@@ -136,6 +113,7 @@
 
     function loadPosts() {
       const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      const postList = document.getElementById("postList");
       postList.innerHTML = "";
 
       posts.forEach((post, index) => {
@@ -171,9 +149,11 @@
       loadPosts();
     }
 
+    // Запуск автогенерації кожні 27 секунд
+    setInterval(generateRandomPost, 27000);
+
     // Початкове завантаження
     loadPosts();
-
   </script>
 </body>
 </html>
